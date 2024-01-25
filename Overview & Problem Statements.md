@@ -16,7 +16,7 @@ This is a log of the dashboard building steps including the measures created and
 7. Make sure all column types are as they should (Integer,DateTime, etc.)
 8. Create relationships from all table to the transactions table 
 9. Hide the unneeded columns in the transactions table (aka the joined columns)
-10. Create a new measures table using DAX: Measures Table = {BLANK()}
+10. Create a new measures table using DAX: Measures Table = {BLANK()} | This stores all the calculated columns.
 11. Question asks for average transaction amount by location and type, create new measure DAX: Average_Amount = AVERAGE(Transactions[TransactionAmount])
 12. Question 2: Which ATM location has the highest number of transactions per day, and at what time of the day do the transactions occur most frequently?
 - Create measure that counts number of transactions, DAX: Transaction_Count = COUNTROWS(Transactions)
