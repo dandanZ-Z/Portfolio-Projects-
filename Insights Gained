@@ -1,1 +1,20 @@
+A summary of insights gained from the dashboard.
 
+1. 55% of transactions are withdrawals with transfers at 22% and balance inquiries/deposits coming in at 11% each. 
+   This means that the market Wisabi bank is serving mainly uses cash in its day to day life. 
+   Some potential actions could include further optimizing ATMs for cash withdrawal, or inversely implementing cashless incentives to lessen the load on cash.
+
+2. LAGOS has a higher Average Transaction amount but lower Average Duration per Transaction as compared to the state of KANO.
+   This data point suggests KANO can further optimise their transaction processes, maybe even learning what LAGOS is doing well.
+   It could also mean than KANO's ATMs require maintenance as their hardware is potentially on the slower side. 
+
+3. KANO reaches its peak transaction count throughout the day the earliest and also drops-off quicker as compared to the other states.
+   This could be related to the above insight where customers realise they take a longer time for transactions and so head to the ATM earlier in the day.
+
+4. LAGOS has the highest average transaction count and also a much higher transaction count after office hours as compared to the other states.
+   We can potentially infer than LAGOS is more cash dependent and/or is a generally busier city with longer working hours.
+
+5. ATM utilisation rate in the Federal Capital Territory state is very low at 8.5% as compared to the rest at 12.9%. 
+   This could mean that ATMs are generally not as accessible as transaction counts are relatively normal. 
+   From this it could be said that most of the transactions are conducted online as opposed to ATMs.
+   Some potential actions could be promotions to use ATMS more, or improve the online service to enhance customer experience.
