@@ -1,4 +1,3 @@
-Power-BI
 From the dashboard, we can see that:
 
 **#ADD SCREENSHOTS FOR ALL**
