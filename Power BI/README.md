@@ -22,7 +22,7 @@ There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimens
 | Transaction Type ID   | Unique identifier for the type of transaction that was performed (e.g., withdrawal, savings, balance enquiry, transfer) |
 | Transaction Amount    | Amount of money involved in the transaction                                                  |
 
-<br/><br/>
+//
 
 `Location Dimension` Table:
 | Column Name               | Description |
