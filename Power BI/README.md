@@ -2,14 +2,14 @@
 Wisabi Bank ATM Transaction Data Analytics Project
 
 # Project Overview
-Analyze the ATM transaction data for Wisabi Bank to gain insights using on customer behavior, ATM usage, and identify opportunities to improve the bank's services. The full project brief can be found [here](https://docs.google.com/document/d/1ZXkMXSi63byaGLC22zwnGGwwbPSd8e9z/edit).
+Analyze the ATM transaction data for Wisabi Bank to gain insights using on customer behavior, ATM usage, and identify opportunities to improve the bank's services. The full project brief can be found [here](https://docs.google.com/document/d/1ZXkMXSi63byaGLC22zwnGGwwbPSd8e9z/edit). All other relevant information can be found [here](https://drive.google.com/drive/folders/11h6RCsniJXMrfRhXnxSo_8-buBveWcgU).
 
 # Software Used
 Microsoft Power BI
 
 # Data
 ## Description of Data
-There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimension`, `Transaction Type Dimension`, `Hour Dimension`. Full data dictionary can be found [here](https://docs.google.com/spreadsheets/d/1hgZ8GiAymaU94aAiStWcULTrAiiOROSA/edit#gid=1326132389)
+There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimension`, `Transaction Type Dimension`, `Hour Dimension`. Full data dictionary can be found [here](https://docs.google.com/spreadsheets/d/1hgZ8GiAymaU94aAiStWcULTrAiiOROSA/edit#gid=1326132389).
 
 `Transactions Fact` Table:
 | Column Name           | Description                                                                                   |
