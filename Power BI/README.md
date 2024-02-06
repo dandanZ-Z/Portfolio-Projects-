@@ -65,6 +65,9 @@ There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimens
 | Hours                 | Hour of the day (0-23) |
 | Hour Start Time       | Time at which the hour begins (e.g., 12:00 AM
 
+## Data Preprocessing and cleaning
+### 
+(Clean up and add log here)
 
 # Insights Gained
 
