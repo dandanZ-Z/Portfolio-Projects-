@@ -22,7 +22,7 @@ There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimens
 | Transaction Type ID   | Unique identifier for the type of transaction that was performed (e.g., withdrawal, savings, balance enquiry, transfer) |
 | Transaction Amount    | Amount of money involved in the transaction                                                  |
 
-\ \
+  
 
 `Location Dimension` Table:
 | Column Name               | Description |
@@ -34,7 +34,7 @@ There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimens
 | State                 | State in which the ATM is located                                                              |
 | Country               | Country in which the ATM is located                                                            |
 
-<br/><br/>
+  
 
 `Customers Dimension` Table:
 | Column Name               | Description |
@@ -49,7 +49,7 @@ There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimens
 | Account Type          | Type of account that the cardholder has (e.g., savings, checking, etc.)                       |
 | Is Wisabi             | Boolean flag that indicates whether the cardholder is a customer of Wisabi Bank or another bank|
 
-<br/><br/>
+  
 
 `Transaction Type Dimension` Table:
 | Column Name               | Description |
@@ -57,7 +57,7 @@ There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimens
 | TransactionTypeID  | Unique identifier for the transaction type (e.g., 1 for withdrawal, 2 for savings, 3 for balance enquiry, 4 for transfer)|
 | Transaction Type   | Name of the transaction type (e.g., "withdrawal", "savings", "balance enquiry", "transfer")   |
 
-<br/><br/>
+  
 
 `Hour Dimension` Table:
 | Column Name               | Description |
