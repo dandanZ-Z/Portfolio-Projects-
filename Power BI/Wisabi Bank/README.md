@@ -5,7 +5,7 @@ Wisabi Bank ATM Transaction Data Analytics Project
 Analyze the ATM transaction data for Wisabi Bank to gain insights using on customer behavior, ATM usage, and identify opportunities to improve the bank's services. The full project brief can be found [here](https://docs.google.com/document/d/1ZXkMXSi63byaGLC22zwnGGwwbPSd8e9z/edit).
 
 # Software Used
-Microsoft Power BI
+Microsoft Power BI | Power Query Editor
 
 # Data
 ## Description of Data
