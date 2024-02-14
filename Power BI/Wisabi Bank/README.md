@@ -1,5 +1,5 @@
 # Project Title
-Wisabi Bank ATM Transaction Data Analytics Project
+Wisabi Bank ATM Transaction Data Analytics
 
 # Project Overview
 Analyze the ATM transaction data for Wisabi Bank to gain insights using on customer behavior, ATM usage, and identify opportunities to improve the bank's services. The full project brief can be found [here](https://docs.google.com/document/d/1ZXkMXSi63byaGLC22zwnGGwwbPSd8e9z/edit).
@@ -68,7 +68,32 @@ There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimens
 
 ## Data Preprocessing and cleaning
 ### 
-(Clean up and add log here)
+This is a log of the Power Query steps including the measures created and their assiociated DAX formulas:
+
+1. Read the project brief to get an idea of what is needed
+   
+3. Load & rename the 5 tables into Power BI
+   
+5. Clean the tables (Remove NaNs, changed column types)
+   
+7. Added a calculated column using DAX to find the transaction duration: Duration.TotalMinutes ([TransactionEndDateTime]-[TransactionStartDateTime])
+   
+9. Added calculated column using DAX to find the age using the birth date: Table.AddColumn(#"Changed Type1", "Age", each Number.From(DateTime.LocalNow() - [Birth Date]) / 365.25) | - Challenges faced included regional settings, column type settings, learning the formula from scratch.
+    
+11. Created a new conditional column to seperate the ages into age groups of 10: Table.AddColumn(#"Rounded Up", "Age Group", each if [Age] <= 15 then "0-15" else if [Age] <= 25 then "16-25" else if [Age] <= 35 then "26-35" else if [Age] <= 45 then "36-45" else if [Age] <= 55 then "46-55" else if [Age] <= 65 then "56-65" else if [Age] > 65 then "More than 65" else "Other")
+    
+13. Make sure all column types are as they should (Integer,DateTime, etc.)
+    
+15. Create relationships from all tables to the transactions table (many to 1 relationships)
+    
+17. Hide the unneeded columns in the transactions table (aka the joined columns)
+    
+19. Create a new measures table using DAX: Measures Table = {BLANK()} | This stores all the calculated columns.
+
+
+## Questions
+### 
+
 
 
 # Insights Gained
