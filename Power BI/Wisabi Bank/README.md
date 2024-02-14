@@ -9,7 +9,7 @@ Microsoft Power BI | Power Query Editor
 
 # Data
 ## Description of Data
-There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimension`, `Transaction Type Dimension`, `Hour Dimension`. Complete data tables can be found [here]([https://drive.google.com/drive/folders/1TlR1w68MV3igfZ_Ni4SyDYKB14luC9zo?usp=sharing])
+There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimension`, `Transaction Type Dimension`, `Hour Dimension`. Complete data tables can be found [here](https://drive.google.com/drive/folders/1TlR1w68MV3igfZ_Ni4SyDYKB14luC9zo?usp=sharing).
 
 `Transactions Fact` Table:
 | Column Name           | Description                                                                                   |
