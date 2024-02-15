@@ -70,29 +70,74 @@ There 5 main tables: `Transactions Fact`, `Location Dimension`, `Customer Dimens
 ### 
 This is a log of the Power Query steps including the measures created and their assiociated DAX formulas:
 
-1. Read the project brief to get an idea of what is needed
+1. Read the project brief to get an idea of what is needed.
    
-3. Load & rename the 5 tables into Power BI
+2. Load & rename the 5 tables into Power BI.
    
-5. Clean the tables (Remove NaNs, changed column types)
+3. Clean the tables (Remove NaNs, changed column types).
    
-7. Added a calculated column using DAX to find the transaction duration: Duration.TotalMinutes ([TransactionEndDateTime]-[TransactionStartDateTime])
+4. Added a calculated column using DAX to find the transaction duration: Duration.TotalMinutes ([TransactionEndDateTime]-[TransactionStartDateTime]).
    
-9. Added calculated column using DAX to find the age using the birth date: Table.AddColumn(#"Changed Type1", "Age", each Number.From(DateTime.LocalNow() - [Birth Date]) / 365.25) | - Challenges faced included regional settings, column type settings, learning the formula from scratch.
+5. Added calculated column using DAX to find the age using the birth date: Table.AddColumn(#"Changed Type1", "Age", each Number.From(DateTime.LocalNow() - [Birth Date]) / 365.25) | - Challenges faced included regional settings, column type settings, learning the formula from scratch.
     
-11. Created a new conditional column to seperate the ages into age groups of 10: Table.AddColumn(#"Rounded Up", "Age Group", each if [Age] <= 15 then "0-15" else if [Age] <= 25 then "16-25" else if [Age] <= 35 then "26-35" else if [Age] <= 45 then "36-45" else if [Age] <= 55 then "46-55" else if [Age] <= 65 then "56-65" else if [Age] > 65 then "More than 65" else "Other")
+6. Created a new conditional column to seperate the ages into age groups of 10: Table.AddColumn(#"Rounded Up", "Age Group", each if [Age] <= 15 then "0-15" else if [Age] <= 25 then "16-25" else if [Age] <= 35 then "26-35" else if [Age] <= 45 then "36-45" else if [Age] <= 55 then "46-55" else if [Age] <= 65 then "56-65" else if [Age] > 65 then "More than 65" else "Other").
     
-13. Make sure all column types are as they should (Integer,DateTime, etc.)
+7. Make sure all column types are as they should (Integer,DateTime, etc.).
     
-15. Create relationships from all tables to the transactions table (many to 1 relationships)
+8. Create relationships from all tables to the transactions table (many to 1 relationship type).
     
-17. Hide the unneeded columns in the transactions table (aka the joined columns)
+9. Hide the unneeded columns in the transactions table (mostly the joined columns).
     
-19. Create a new measures table using DAX: Measures Table = {BLANK()} | This stores all the calculated columns.
+10. Create a new measures table using DAX: Measures Table = {BLANK()} | This stores all the calculated columns.
 
 
 ## Questions
 ### 
+1. Question 1: Show the average transaction amount by location and type.
+   - Create new measure DAX: Average_Amount = AVERAGE(Transactions[TransactionAmount])
+     
+2. Question 2: Which ATM location has the highest number of transactions per day, and at what time of the day do the transactions occur most frequently?
+   - Create measure that counts number of transactions, DAX: Transaction_Count = COUNTROWS(Transactions)
+     
+3. Question 3: Which age group has the highest number of transactions, and which transaction type do they usually perform? 
+   - Use the age group column created in step 6 of data processing + measure just created above.
+     
+4. Question 4: What is the trend of transaction volume and transaction amount over time, and are there any seasonal trends or patterns?
+   - Create a new measure for txn amount. DAX: Transaction_amount = SUM(Transactions[TransactionAmount]) 
+   - Challenges: data was not grouped by months, just grouped as a blank. 
+   - Remedy: checked through the relationships, checked that I was not making any mistakes in the data visualisation part, checked the date column types for all 
+     tables and found the issue there.
+     
+   - Challenge 2 : In the visualisation, months are not in chronological order, and they cannot be sorted by alphebetical order. 
+   - Remedy: Visualisation panel: Month Name > Sort by Column > sort by Month column. Month column contains the month number in calendar order. 
+   - Drag out and in the Month Name in the X-axis (to refresh data), visualisation is now chronologically sorted.
+     
+5. Question 5: What is the most common transaction type, and how does it vary by location and customer type (Wisabi customer vs. non-Wisabi customer)?
+   - Donut chart; add txn count + name data. Filters for location + customer type.
+     
+6. Question 6: What is the average transaction amount and transaction frequency per customer by occupation and age group? 
+   - Create new measure number of customers DAX: Nu_Customers = DISTINCTCOUNT(Transactions[CardholderID]) 
+   - Create new measure transaction_freq DAX: Transaction_Freq = DIVIDE([Transaction_Count],[Nu_Customers]) | Change transaction_freq measure to Whole Number 
+     column type.
+   
+7. Question 7: What is the percentage of transactions that are withdrawals, savings, balance enquiries, and transfers, and how does it vary by location and time 
+    of day?  
+    - Add filters to the donut chart.
+       
+8. Question 8: Which ATM locations have the highest and lowest utilization rates, and what factors contribute to this utilization rate?
+   - Create new measure to find the rate (time used/time available 24/7 365) . Put state, util_rate into the map visual.
+   - Challenges: map visualisation not appearing. 
+   - Remedy: Changed the file region settings to nigeria but still did not work. Went in to table view and changed the column category to city/country/state and 
+     the map visual worked.
+   
+9. Question 9: What is the average transaction time by location, transaction type, and time of day, and how does it vary by customer type and occupation? 
+    - Create new measures. DAX: Average_Duration = AVERAGE(Transactions[Duration]) |
+    - DAX:  % Transactions = DIVIDE([Transaction_Count],CALCULATE([Transaction_Count],ALLSELECTED(Transactions) )
+      
+10. Added the background, arranged the dashboards, formated the visuals to fit in with the background.
+    
+11. Created buttons for an interactive dashboard where you can select different pages by clicking the symbols on the dashboard.
+
 
 
 
