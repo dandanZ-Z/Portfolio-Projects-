@@ -6,17 +6,21 @@ SELECT CUSTOMER_ID,
 FROM JOINED
 GROUP BY CUSTOMER_ID
 ORDER BY CUSTOMER_ID 
-
 ```
 Ouput:
 <markdown table output here>
-  
+"customer_id"	"sum"
+"A"	76
+"B"	74
+"C"	36  
 ***
 
 **2. How many days has each customer visited the restaurant?**
 
-````sql
-
+````
+SELECT customer_id, count(distinct order_date)
+FROM JOINED
+GROUP BY CUSTOMER_ID
 ````
 Output:
 
