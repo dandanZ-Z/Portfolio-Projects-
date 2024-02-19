@@ -223,17 +223,28 @@ Output:
 
 **Bonus Question 1: Join All the Things**
 ```sql
-
+CREATE OR REPLACE VIEW JOINED AS
+SELECT menu.product_id, product_name, price, sales.customer_id, sales.order_date, members.join_date
+FROM DD1.MENU
+FULL JOIN DD1.SALES ON MENU.PRODUCT_ID = SALES.PRODUCT_ID
+FULL JOIN DD1.MEMBERS ON SALES.CUSTOMER_ID = MEMBERS.CUSTOMER_ID;
 ```
 Output:
-
-***
-
-**Bonus Question 2: Rank All the Things**
-```sql
-
-```
-Ouput:
-
-
+| product_id | product_name | price | customer_id | order_date | join_date  |
+|------------|--------------|-------|-------------|------------|------------|
+| 2          | curry        | 15    | A           | 2021-01-07 | 2021-01-07 |
+| 3          | ramen        | 12    | A           | 2021-01-11 | 2021-01-07 |
+| 3          | ramen        | 12    | A           | 2021-01-11 | 2021-01-07 |
+| 3          | ramen        | 12    | A           | 2021-01-10 | 2021-01-07 |
+| 1          | sushi        | 10    | A           | 2021-01-01 | 2021-01-07 |
+| 2          | curry        | 15    | A           | 2021-01-01 | 2021-01-07 |
+| 1          | sushi        | 10    | B           | 2021-01-04 | 2021-01-09 |
+| 1          | sushi        | 10    | B           | 2021-01-11 | 2021-01-09 |
+| 2          | curry        | 15    | B           | 2021-01-01 | 2021-01-09 |
+| 2          | curry        | 15    | B           | 2021-01-02 | 2021-01-09 |
+| 3          | ramen        | 12    | B           | 2021-01-16 | 2021-01-09 |
+| 3          | ramen        | 12    | B           | 2021-02-01 | 2021-01-09 |
+| 3	     | ramen        | 12    | C           | 2021-01-01 |	
+| 3	     | ramen        | 12    | C           | 2021-01-01 |	
+| 3	     | ramen        | 12    | C           | 2021-01-07 |
 ***
