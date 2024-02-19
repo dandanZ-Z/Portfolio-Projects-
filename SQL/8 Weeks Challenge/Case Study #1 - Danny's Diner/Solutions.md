@@ -1,6 +1,11 @@
 **1. What is the total amount each customer spent at the restaurant?**
 
-```sql
+```
+SELECT CUSTOMER_ID,
+	SUM(PRICE) 
+FROM JOINED
+GROUP BY CUSTOMER_ID
+ORDER BY CUSTOMER_ID 
 
 ```
 Ouput:
