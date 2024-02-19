@@ -25,7 +25,11 @@ FROM JOINED
 GROUP BY CUSTOMER_ID
 ````
 Output:
-
+| customer_id | count |
+|-------------|-------|
+| A           | 4     |
+| B           | 6     |
+| C           | 2     |
 
 ***
 
