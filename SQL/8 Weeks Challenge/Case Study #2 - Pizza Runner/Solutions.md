@@ -1,94 +1,64 @@
 **1. How many pizzas were ordered?**
 
 ```sql
-SELECT CUSTOMER_ID,
-	SUM(PRICE) 
-FROM JOINED
-GROUP BY CUSTOMER_ID
-ORDER BY CUSTOMER_ID 
+select count(order_id) as pizzas_ordered
+from joined
 ```
 Output:
-| customer_id | sum |
-|-------------|-----|
-| A           | 76  |
-| B           | 74  |
-| C           | 36  |
+| pizzas_ordered |
+|----------------|
+|       14       |
+
 
 
 ***
 
-**2. How many days has each customer visited the restaurant?**
+**2. How many unique customer orders were made?**
 
 ````sql
-SELECT customer_id, count(distinct order_date)
-FROM JOINED
-GROUP BY CUSTOMER_ID
+select count(distinct order_id) as no_of_orders
+from joined
 ````
 Output:
-| customer_id | count |
-|-------------|-------|
-| A           | 4     |
-| B           | 6     |
-| C           | 2     |
+| no_of_orders |
+|--------------|
+|      10      |
+
 
 ***
 
-**3. What was the first item from the menu purchased by each customer?**
+**3. How many successful orders were delivered by each runner?**
 
 ````sql
-WITH items AS (
-  SELECT 
-    customer_id, 
-    product_name, 
-    order_date,
-    Rank() OVER (PARTITION BY customer_id ORDER BY order_date) AS rank
-  FROM joined
-)
-SELECT customer_id, product_name
-FROM items
-WHERE rank = 1
+select count (distinct pickup_time) as successful_orders from joined
+where pickup_time is not null
 ````
 Output:
-| customer_id | product_name |
-|-------------|--------------|
-| A           | sushi        |
-| A           | curry        |
-| B           | curry        |
-| C           | ramen        |
-| C           | ramen        |
+| successful_orders |
+|-------------------|
+|         8         |
+
 
 ***
 
-**4. What is the most purchased item on the menu and how many times was it purchased by all customers?**
+**4. How many of each type of pizza was delivered?**
 
 ````sql
-SELECT PRODUCT_NAME,
-	COUNT(*) AS AMOUNT_PURCHASED
-FROM JOINED
-GROUP BY PRODUCT_NAME
-ORDER BY AMOUNT_PURCHASED DESC
-LIMIT 1
+select pizza_name, count (pizza_name) as number_delivered from joined
+group by pizza_name
 ````
 Output:
-| product_name | amount_purchased |
-|--------------|------------------|
-| ramen        | 8                |
+| pizza_name  | number_delivered |
+|-------------|------------------|
+| Meatlovers  | 10               |
+| Vegetarian  | 4                |
+
 ***
 
-**5. Which item was the most popular for each customer?**
+**5. How many Vegetarian and Meatlovers were ordered by each customer?**
 
 ```sql
-WITH RANKED_ITEMS AS
-	(SELECT CUSTOMER_ID,
-			PRODUCT_NAME,
-			RANK() OVER (PARTITION BY CUSTOMER_ID ORDER BY COUNT (PRODUCT_ID) DESC) AS RANK
-		FROM JOINED
-		GROUP BY CUSTOMER_ID,
-			PRODUCT_NAME)
-SELECT CUSTOMER_ID,
-	PRODUCT_NAME
-FROM RANKED_ITEMS
-WHERE RANK = 1
+
 ```
 Output:
 | customer_id | product_name |
@@ -101,24 +71,10 @@ Output:
 
 ***
 
-**6. Which item was purchased first by the customer after they became a member?**
+**6. What was the maximum number of pizzas delivered in a single order?**
 
 ```sql
-WITH RANKED_ITEMS AS
-	(SELECT CUSTOMER_ID,
-			PRODUCT_NAME,
-			ORDER_DATE,
-			RANK() OVER (PARTITION BY CUSTOMER_ID ORDER BY ORDER_DATE ASC) AS RANK
-		FROM JOINED
-		WHERE ORDER_DATE > JOIN_DATE)
-SELECT CUSTOMER_ID,
-	PRODUCT_NAME,
-	ORDER_DATE
-FROM RANKED_ITEMS
-WHERE RANK = 1
-GROUP BY CUSTOMER_ID,
-	ORDER_DATE,
-	PRODUCT_NAME
+
 ```
 Output:
 | customer_id | product_name | order_date |
@@ -127,27 +83,10 @@ Output:
 | B           | sushi        | 2021-01-11 |
 ***
 
-**7. Which item was purchased just before the customer became a member?**
+**7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?**
 
 ````sql
-WITH RANKED_ITEMS AS
-	(SELECT CUSTOMER_ID,
-			PRODUCT_NAME,
-			ORDER_DATE,
-			JOIN_DATE,
-			RANK() OVER (PARTITION BY CUSTOMER_ID ORDER BY ORDER_DATE DESC) AS RANK
-		FROM JOINED
-		WHERE ORDER_DATE < JOIN_DATE)
-SELECT CUSTOMER_ID,
-	PRODUCT_NAME,
-	ORDER_DATE,
-	JOIN_DATE
-FROM RANKED_ITEMS
-WHERE RANK = 1
-GROUP BY CUSTOMER_ID,
-	ORDER_DATE,
-	PRODUCT_NAME,
-	JOIN_DATE
+
 ````
 Output:
 | customer_id | product_name | order_date | join_date  |
@@ -157,16 +96,10 @@ Output:
 | B           | sushi        | 2021-01-04 | 2021-01-09 |
 ***
 
-**8. What is the total items and amount spent for each member before they became a member?**
+**8. How many pizzas were delivered that had both exclusions and extras?**
 
 ```sql
-SELECT CUSTOMER_ID,
-	COUNT(DISTINCT PRODUCT_NAME) AS NO_OF_ITEMS,
-	SUM(PRICE) AS TOTAL_SPENT
-FROM JOINED
-WHERE ORDER_DATE < JOIN_DATE
-GROUP BY CUSTOMER_ID
-ORDER BY CUSTOMER_ID
+
 ```
 Output:
 | customer_id | no_of_items | total_spent |
