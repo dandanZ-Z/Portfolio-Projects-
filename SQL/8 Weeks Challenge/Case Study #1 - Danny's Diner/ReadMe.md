@@ -17,7 +17,7 @@ Danny has provided you with a sample of his overall customer data due to privacy
 ![image](https://github.com/dandanZ-Z/Portfolio-Projects-/assets/130724132/33efb3b0-6966-4dc5-a606-691c8ffc737f)
 
 # Data Creation
-'''sql
+```sql
 CREATE SCHEMA dannys_diner;
 SET search_path = dannys_diner;
 
@@ -71,7 +71,7 @@ INSERT INTO members
 VALUES
   ('A', '2021-01-07'),
   ('B', '2021-01-09');
-'''
+```
 
 # Cover Graphic
 ![image](https://github.com/dandanZ-Z/Portfolio-Projects-/assets/130724132/a4193565-c29b-4106-9a12-118f55d87fc9)
