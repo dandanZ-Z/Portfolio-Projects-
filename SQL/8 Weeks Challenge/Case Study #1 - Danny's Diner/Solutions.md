@@ -1,6 +1,6 @@
 **1. What is the total amount each customer spent at the restaurant?**
 
-```
+```sql
 SELECT CUSTOMER_ID,
 	SUM(PRICE) 
 FROM JOINED
@@ -9,10 +9,7 @@ ORDER BY CUSTOMER_ID
 ```
 Ouput:
 <markdown table output here>
-"customer_id"	"sum"
-"A"	76
-"B"	74
-"C"	36  
+
 ***
 
 **2. How many days has each customer visited the restaurant?**
