@@ -1,3 +1,47 @@
+**Creating the joined view**
+
+```sql
+Create or replace VIEW JOINED AS
+SELECT CO.ORDER_ID,
+	CO.CUSTOMER_ID,
+	PN.PIZZA_NAME,
+	PR.TOPPINGS,
+	CASE
+            WHEN CO.EXCLUSIONS = '' OR CO.EXCLUSIONS = 'null' THEN NULL
+            ELSE CAST(REGEXP_REPLACE(CO.EXCLUSIONS,'[ ,]+','','g') AS INTEGER)
+	END AS EXCLUSIONS_CLEANED,
+	CASE
+            WHEN CO.EXTRAS = ''	OR CO.EXTRAS = 'null' THEN NULL
+            ELSE CAST(REGEXP_REPLACE(CO.EXTRAS,'[ ,]+','','g') AS INTEGER)
+	END AS EXTRAS_CLEANED,
+	CO.ORDER_TIME,
+	RO.RUNNER_ID,
+	R.REGISTRATION_DATE,
+	CAST(NULLIF(RO.PICKUP_TIME,'null') AS TIMESTAMP WITHOUT TIME ZONE) AS PICKUP_TIME,
+	CASE
+            WHEN RO.DISTANCE = '' OR RO.DISTANCE = 'null' THEN NULL
+            ELSE CAST(REGEXP_REPLACE(RO.DISTANCE,'[^0-9\.]','','g') AS DECIMAL(7,2))
+	END AS DISTANCE_KM,
+	CASE
+            WHEN RO.DURATION = '' OR RO.DURATION = 'null' THEN NULL
+            ELSE CAST(REGEXP_REPLACE(RO.DURATION,'[^0-9]','','g') AS INTEGER)
+	END AS DURATION_MINS,
+	CASE
+             WHEN RO.CANCELLATION = '' OR RO.CANCELLATION = 'null' THEN NULL
+             ELSE RO.CANCELLATION
+	END AS CANCELS
+FROM PR2.CUSTOMER_ORDERS CO
+JOIN PR2.PIZZA_NAMES PN ON CO.PIZZA_ID = PN.PIZZA_ID
+JOIN PR2.PIZZA_RECIPES PR ON CO.PIZZA_ID = PR.PIZZA_ID
+JOIN PR2.RUNNER_ORDERS RO ON CO.ORDER_ID = RO.ORDER_ID
+JOIN PR2.RUNNERS R ON RO.RUNNER_ID = R.RUNNER_ID
+```
+Output:
+Data will be cleaned and all tables will be joined together into 1 view
+
+***
+
+
 **1. How many pizzas were ordered?**
 
 ```sql
@@ -8,8 +52,6 @@ Output:
 | pizzas_ordered |
 |----------------|
 |       14       |
-
-
 
 ***
 
