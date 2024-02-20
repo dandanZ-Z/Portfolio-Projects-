@@ -58,42 +58,64 @@ Output:
 **5. How many Vegetarian and Meatlovers were ordered by each customer?**
 
 ```sql
-
+select customer_id, pizza_name, count (pizza_name) as number_delivered from joined
+group by customer_id, pizza_name
+order by customer_id
 ```
 Output:
-| customer_id | product_name |
-|-------------|--------------|
-| A           | ramen        |
-| B           | ramen        |
-| B           | curry        |
-| B           | sushi        |
-| C           | ramen        |
+| customer_id | pizza_name  | number_delivered |
+|-------------|-------------|------------------|
+| 101         | Vegetarian  | 1                |
+| 101         | Meatlovers  | 2                |
+| 102         | Meatlovers  | 2                |
+| 102         | Vegetarian  | 1                |
+| 103         | Vegetarian  | 1                |
+| 103         | Meatlovers  | 3                |
+| 104         | Meatlovers  | 3                |
+| 105         | Vegetarian  | 1                |
+
 
 ***
 
 **6. What was the maximum number of pizzas delivered in a single order?**
 
 ```sql
-
+select customer_id, pizza_name, count (pizza_name) as number_delivered from joined
+group by customer_id, pizza_name
+order by number_delivered desc
+limit 1
 ```
 Output:
-| customer_id | product_name | order_date |
-|-------------|--------------|------------|
-| A           | ramen        | 2021-01-10 |
-| B           | sushi        | 2021-01-11 |
+| customer_id | pizza_name  | number_delivered |
+|-------------|-------------|------------------|
+| 103         | Meatlovers  | 3                |
+
 ***
 
 **7. For each customer, how many delivered pizzas had at least 1 change and how many had no changes?**
 
 ````sql
-
+SELECT CUSTOMER_ID,
+	COUNT(CASE
+              WHEN EXCLUSIONS_CLEANED IS NOT NULL OR EXTRAS_CLEANED IS NOT NULL THEN 1
+              END) AS CHANGED_PIZZAS,
+	COUNT(CASE
+              WHEN EXCLUSIONS_CLEANED IS NULL AND EXTRAS_CLEANED IS NULL THEN 1
+              END) AS NO_CHANGE
+FROM JOINED
+WHERE joined.distance_km IS NOT NULL
+GROUP BY CUSTOMER_ID
+ORDER BY CUSTOMER_ID
 ````
 Output:
-| customer_id | product_name | order_date | join_date  |
-|-------------|--------------|------------|------------|
-| A           | curry        | 2021-01-01 | 2021-01-07 |
-| A           | sushi        | 2021-01-01 | 2021-01-07 |
-| B           | sushi        | 2021-01-04 | 2021-01-09 |
+| customer_id | changed_pizzas | no_change |
+|-------------|----------------|-----------|
+| 101         | 0              | 2         |
+| 102         | 0              | 3         |
+| 103         | 3              | 0         |
+| 104         | 2              | 1         |
+| 105         | 1              | 0         |
+
 ***
 
 **8. How many pizzas were delivered that had both exclusions and extras?**
@@ -102,10 +124,7 @@ Output:
 
 ```
 Output:
-| customer_id | no_of_items | total_spent |
-|-------------|-------------|-------------|
-| A           | 2           | 25          |
-| B           | 2           | 40          |
+
 ***
 
 **9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier — how many points would each customer have?**
