@@ -24,7 +24,6 @@ Output:
 |--------------|
 |      10      |
 
-
 ***
 
 **3. How many successful orders were delivered by each runner?**
@@ -37,7 +36,6 @@ Output:
 | successful_orders |
 |-------------------|
 |         8         |
-
 
 ***
 
@@ -121,83 +119,145 @@ Output:
 **8. How many pizzas were delivered that had both exclusions and extras?**
 
 ```sql
-
+SELECT COUNT(*) AS NU_PIZZAS
+FROM JOINED
+WHERE EXCLUSIONS_CLEANED IS NOT NULL
+	AND EXTRAS_CLEANED IS NOT NULL
 ```
 Output:
+| nu_pizzas |
+|-----------|
+|     2     |
 
 ***
 
-**9. If each $1 spent equates to 10 points and sushi has a 2x points multiplier — how many points would each customer have?**
+**9. What was the total volume of pizzas ordered for each hour of the day?**
 
 ```sql
-SELECT CUSTOMER_ID,
-	SUM(CASE
-		WHEN PRODUCT_NAME = 'Sushi' THEN PRICE * 20
-		ELSE PRICE * 10
-		END) AS POINTS
+SELECT DATE_TRUNC('hour',ORDER_TIME),
+	COUNT(*)AS NU_PIZZAS
 FROM JOINED
+GROUP BY ORDER_TIME
+ORDER BY ORDER_TIME
+```
+Output:
+| date_trunc           | nu_pizzas |
+|----------------------|-----------|
+| 2020-01-01 18:00:00  | 1         |
+| 2020-01-01 19:00:00  | 1         |
+| 2020-01-02 23:00:00  | 2         |
+| 2020-01-04 13:00:00  | 3         |
+| 2020-01-08 21:00:00  | 1         |
+| 2020-01-08 21:00:00  | 1         |
+| 2020-01-08 21:00:00  | 1         |
+| 2020-01-09 23:00:00  | 1         |
+| 2020-01-10 11:00:00  | 1         |
+| 2020-01-11 18:00:00  | 2         |
+***
+
+**10. What was the volume of orders for each day of the week?**
+
+```sql
+SELECT to_char(order_time, 'DAY') AS day, COUNT(*) AS nu_orders
+FROM joined
+GROUP BY to_char(order_time, 'DAY')
+```
+Output:
+| day       | nu_orders |
+|-----------|-----------|
+| WEDNESDAY | 5         |
+| THURSDAY  | 3         |
+| FRIDAY    | 1         |
+| SATURDAY  | 5         |
+***
+
+
+**B. Runner and Customer Experience**
+
+**1. How many runners signed up for each 1 week period? (i.e. week starts 2021-01-01)**
+```sql
+SELECT DATE_TRUNC('week', REGISTRATION_DATE) AS REGISTRATION_WEEK,
+	COUNT(DISTINCT RUNNER_ID) AS COUNT
+FROM JOINED
+WHERE REGISTRATION_DATE > '2021-01-01 00:00:00+08'
+GROUP BY REGISTRATION_WEEK
+```
+Output:
+| registration_week      | count |
+|------------------------|-------|
+| 2020-12-28 00:00:00+08 | 1     |
+| 2021-01-04 00:00:00+08 | 1     |
+***
+
+**2. What was the average time in minutes it took for each runner to arrive at the Pizza Runner HQ to pickup the order?**
+```sql
+SELECT RUNNER_ID,
+	AVG(DURATION_MINS) AS TIME
+FROM JOINED
+WHERE joined.DURATION_MINS IS NOT NULL
+GROUP BY RUNNER_ID
+ORDER BY RUNNER_ID
+```
+Output:
+| runner_id | time  |
+|-----------|-------|
+| 1         | 19.83 |
+| 2         | 32.00 |
+| 3         | 15.00 |
+
+***
+
+**3. Is there any relationship between the number of pizzas and how long the order takes to prepare?**
+```sql
+SELECT ORDER_ID,
+	COUNT(ORDER_ID) AS NU_PIZZAS,
+	AVG(PICKUP_TIME - ORDER_TIME) AS TIME_TAKEN
+FROM JOINED
+GROUP BY ORDER_ID
+ORDER BY NU_PIZZAS
+```
+Output:
+| order_id | nu_pizzas | time_taken |
+|----------|-----------|------------|
+| 8        | 1         | 00:20:29   |
+| 7        | 1         | 00:10:16   |
+| 1        | 1         | 00:10:32   |
+| 9        | 1         |            |
+| 5        | 1         | 00:10:28   |
+| 6        | 1         |            |
+| 2        | 1         | 00:10:02   |
+| 3        | 2         | 00:21:14   |
+| 10       | 2         | 00:15:31   |
+| 4        | 3         | 00:29:17   |
+--There is a relationship, we can see a trend of more pizzas = more time taken
+***
+
+**4. What was the average distance travelled for each customer?**
+```sql
+SELECT CUSTOMER_ID,
+	AVG(DISTANCE_KM) AS AVG_DIST
+FROM JOINED
+WHERE DISTANCE_KM IS NOT NULL
 GROUP BY CUSTOMER_ID
 ORDER BY CUSTOMER_ID
 ```
 Output:
-| customer_id | points |
-|-------------|--------|
-| A           | 760    |
-| B           | 740    |
-| C           | 360    |
+| customer_id | avg_dist  |
+|-------------|-----------|
+| 101         | 20.00     |
+| 102         | 16.73     |
+| 103         | 23.40     |
+| 104         | 10.00     |
+| 105         | 25.00     |
+
 ***
 
-**10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi — how many points do customer A and B have at the end of January?**
 
-```sql
-WITH point_system AS (
-  SELECT 
-    customer_id,
-    SUM(CASE 
-          WHEN order_date < DATE_TRUNC('day', join_date) + INTERVAL '7' DAY THEN price * 20 
-          WHEN product_name = 'Sushi' THEN price * 20 
-          ELSE price * 10 
-        END) AS total_points
-  FROM joined
-  GROUP BY customer_id, join_date
-)
-SELECT customer_id, total_points
-FROM point_system
-WHERE customer_id IN ('A', 'B')
-ORDER BY customer_id
-```
-Output:
-| customer_id | total_points |
-|-------------|--------------|
-| A           | 1520         |
-| B           | 1240         |
-***
 
-**Bonus Question 1: Join All the Things**
-```sql
-CREATE OR REPLACE VIEW JOINED AS
-SELECT menu.product_id, product_name, price, sales.customer_id, sales.order_date, members.join_date
-FROM DD1.MENU
-FULL JOIN DD1.SALES ON MENU.PRODUCT_ID = SALES.PRODUCT_ID
-FULL JOIN DD1.MEMBERS ON SALES.CUSTOMER_ID = MEMBERS.CUSTOMER_ID;
-```
-Output:
-| product_id | product_name | price | customer_id | order_date | join_date  |
-|------------|--------------|-------|-------------|------------|------------|
-| 2          | curry        | 15    | A           | 2021-01-07 | 2021-01-07 |
-| 3          | ramen        | 12    | A           | 2021-01-11 | 2021-01-07 |
-| 3          | ramen        | 12    | A           | 2021-01-11 | 2021-01-07 |
-| 3          | ramen        | 12    | A           | 2021-01-10 | 2021-01-07 |
-| 1          | sushi        | 10    | A           | 2021-01-01 | 2021-01-07 |
-| 2          | curry        | 15    | A           | 2021-01-01 | 2021-01-07 |
-| 1          | sushi        | 10    | B           | 2021-01-04 | 2021-01-09 |
-| 1          | sushi        | 10    | B           | 2021-01-11 | 2021-01-09 |
-| 2          | curry        | 15    | B           | 2021-01-01 | 2021-01-09 |
-| 2          | curry        | 15    | B           | 2021-01-02 | 2021-01-09 |
-| 3          | ramen        | 12    | B           | 2021-01-16 | 2021-01-09 |
-| 3          | ramen        | 12    | B           | 2021-02-01 | 2021-01-09 |
-| 3	     | ramen        | 12    | C           | 2021-01-01 |	
-| 3	     | ramen        | 12    | C           | 2021-01-01 |	
-| 3	     | ramen        | 12    | C           | 2021-01-07 |
-***
+
+
+
+
+
+
 
