@@ -229,7 +229,8 @@ Output:
 | 3        | 2         | 00:21:14   |
 | 10       | 2         | 00:15:31   |
 | 4        | 3         | 00:29:17   |
---There is a relationship, we can see a trend of more pizzas = more time taken
+
+There is a relationship, we can see a trend of more pizzas = more time taken
 ***
 
 **4. What was the average distance travelled for each customer?**
