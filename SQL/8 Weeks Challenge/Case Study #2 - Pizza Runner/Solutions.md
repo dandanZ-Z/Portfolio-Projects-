@@ -253,12 +253,51 @@ Output:
 
 ***
 
+**5. What was the difference between the longest and shortest delivery times for all orders?**
+```sql
+SELECT MAX(DURATION_MINS) - MIN(DURATION_MINS) AS DIFFERENCE
+FROM JOINED
+WHERE DURATION_MINS IS NOT NULL
+```
+Output:
+| difference |
+|------------|
+|     30     |
 
+***
 
+**6. What was the average speed for each runner for each delivery?**
+```sql
+SELECT DISTINCT RUNNER_ID, AVG(DISTANCE_KM / DURATION_MINS) AS SPEED
+FROM JOINED
+WHERE CANCELS IS NULL
+GROUP BY RUNNER_ID
+ORDER BY SPEED DESC
+```
+Output:
+| runner_id | speed |
+|-----------|-------|
+| 2         | 0.86  |
+| 1         | 0.78  |
+| 3         | 0.67  |
 
+***
 
+**7. What is the successful delivery percentage for each runner?**
+```sql
+SELECT RUNNER_ID,
+	COUNT(CASE
+              WHEN CANCELS IS NULL THEN 1
+              END)
+         / COUNT(DISTINCT ORDER_ID) * 100 AS SUCCESS_PERCENT
+FROM JOINED
+GROUP BY RUNNER_ID
+```
+Output:
+| runner_id | success_percent |
+|-----------|-----------------|
+| 1         | 100             |
+| 2         | 100             |
+| 3         | 0               |
 
-
-
-
-
+***
