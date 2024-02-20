@@ -1,78 +1,146 @@
 # Overview
-The website can be found [here](https://8weeksqlchallenge.com/case-study-1/)
+The website can be found [here](https://8weeksqlchallenge.com/case-study-2/)
 
 # Introduction
-Danny seriously loves Japanese food so in the beginning of 2021, he decides to embark upon a risky venture and opens up a cute little restaurant that sells his 3 favourite foods: sushi, curry and ramen.
+Did you know that over 115 million kilograms of pizza is consumed daily worldwide??? (Well according to Wikipedia anyway…)
 
-Danny’s Diner is in need of your assistance to help the restaurant stay afloat - the restaurant has captured some very basic data from their few months of operation but have no idea how to use their data to help them run the business.
+Danny was scrolling through his Instagram feed when something really caught his eye - “80s Retro Styling and Pizza Is The Future!”
+
+Danny was sold on the idea, but he knew that pizza alone was not going to help him get seed funding to expand his new Pizza Empire - so he had one more genius idea to combine with it - he was going to Uberize it - and so Pizza Runner was launched!
+
+Danny started by recruiting “runners” to deliver fresh pizza from Pizza Runner Headquarters (otherwise known as Danny’s house) and also maxed out his credit card to pay freelance developers to build a mobile app to accept orders from customers.
 
 # Problem Statement
-Danny wants to use the data to answer a few simple questions about his customers, especially about their visiting patterns, how much money they’ve spent and also which menu items are their favourite. Having this deeper connection with his customers will help him deliver a better and more personalised experience for his loyal customers.
+Because Danny had a few years of experience as a data scientist - he was very aware that data collection was going to be critical for his business’ growth.
 
-He plans on using these insights to help him decide whether he should expand the existing customer loyalty program - additionally he needs help to generate some basic datasets so his team can easily inspect the data without needing to use SQL.
+He has prepared for us an entity relationship diagram of his database design but requires further assistance to clean his data and apply some basic calculations so he can better direct his runners and optimise Pizza Runner’s operations.
 
-Danny has provided you with a sample of his overall customer data due to privacy issues - but he hopes that these examples are enough for you to write fully functioning SQL queries to help him answer his questions!
+All datasets exist within the pizza_runner database schema - be sure to include this reference within your SQL scripts as you start exploring the data and answering the case study questions.
 
 # Entity-Relationship-Diagram
-![image](https://github.com/dandanZ-Z/Portfolio-Projects-/assets/130724132/33efb3b0-6966-4dc5-a606-691c8ffc737f)
+![image](https://github.com/dandanZ-Z/Portfolio-Projects-/assets/130724132/1324933b-6863-4859-97fe-dbdf0a62551d)
+
 
 # Data Creation
 ```sql
-CREATE SCHEMA dannys_diner;
-SET search_path = dannys_diner;
+CREATE SCHEMA pizza_runner;
+SET search_path = pizza_runner;
 
-CREATE TABLE sales (
-  "customer_id" VARCHAR(1),
-  "order_date" DATE,
-  "product_id" INTEGER
+DROP TABLE IF EXISTS runners;
+CREATE TABLE runners (
+  "runner_id" INTEGER,
+  "registration_date" DATE
+);
+INSERT INTO runners
+  ("runner_id", "registration_date")
+VALUES
+  (1, '2021-01-01'),
+  (2, '2021-01-03'),
+  (3, '2021-01-08'),
+  (4, '2021-01-15');
+
+
+DROP TABLE IF EXISTS customer_orders;
+CREATE TABLE customer_orders (
+  "order_id" INTEGER,
+  "customer_id" INTEGER,
+  "pizza_id" INTEGER,
+  "exclusions" VARCHAR(4),
+  "extras" VARCHAR(4),
+  "order_time" TIMESTAMP
 );
 
-INSERT INTO sales
-  ("customer_id", "order_date", "product_id")
+INSERT INTO customer_orders
+  ("order_id", "customer_id", "pizza_id", "exclusions", "extras", "order_time")
 VALUES
-  ('A', '2021-01-01', '1'),
-  ('A', '2021-01-01', '2'),
-  ('A', '2021-01-07', '2'),
-  ('A', '2021-01-10', '3'),
-  ('A', '2021-01-11', '3'),
-  ('A', '2021-01-11', '3'),
-  ('B', '2021-01-01', '2'),
-  ('B', '2021-01-02', '2'),
-  ('B', '2021-01-04', '1'),
-  ('B', '2021-01-11', '1'),
-  ('B', '2021-01-16', '3'),
-  ('B', '2021-02-01', '3'),
-  ('C', '2021-01-01', '3'),
-  ('C', '2021-01-01', '3'),
-  ('C', '2021-01-07', '3');
- 
+  ('1', '101', '1', '', '', '2020-01-01 18:05:02'),
+  ('2', '101', '1', '', '', '2020-01-01 19:00:52'),
+  ('3', '102', '1', '', '', '2020-01-02 23:51:23'),
+  ('3', '102', '2', '', NULL, '2020-01-02 23:51:23'),
+  ('4', '103', '1', '4', '', '2020-01-04 13:23:46'),
+  ('4', '103', '1', '4', '', '2020-01-04 13:23:46'),
+  ('4', '103', '2', '4', '', '2020-01-04 13:23:46'),
+  ('5', '104', '1', 'null', '1', '2020-01-08 21:00:29'),
+  ('6', '101', '2', 'null', 'null', '2020-01-08 21:03:13'),
+  ('7', '105', '2', 'null', '1', '2020-01-08 21:20:29'),
+  ('8', '102', '1', 'null', 'null', '2020-01-09 23:54:33'),
+  ('9', '103', '1', '4', '1, 5', '2020-01-10 11:22:59'),
+  ('10', '104', '1', 'null', 'null', '2020-01-11 18:34:49'),
+  ('10', '104', '1', '2, 6', '1, 4', '2020-01-11 18:34:49');
 
-CREATE TABLE menu (
-  "product_id" INTEGER,
-  "product_name" VARCHAR(5),
-  "price" INTEGER
+
+DROP TABLE IF EXISTS runner_orders;
+CREATE TABLE runner_orders (
+  "order_id" INTEGER,
+  "runner_id" INTEGER,
+  "pickup_time" VARCHAR(19),
+  "distance" VARCHAR(7),
+  "duration" VARCHAR(10),
+  "cancellation" VARCHAR(23)
 );
 
-INSERT INTO menu
-  ("product_id", "product_name", "price")
+INSERT INTO runner_orders
+  ("order_id", "runner_id", "pickup_time", "distance", "duration", "cancellation")
 VALUES
-  ('1', 'sushi', '10'),
-  ('2', 'curry', '15'),
-  ('3', 'ramen', '12');
-  
+  ('1', '1', '2020-01-01 18:15:34', '20km', '32 minutes', ''),
+  ('2', '1', '2020-01-01 19:10:54', '20km', '27 minutes', ''),
+  ('3', '1', '2020-01-03 00:12:37', '13.4km', '20 mins', NULL),
+  ('4', '2', '2020-01-04 13:53:03', '23.4', '40', NULL),
+  ('5', '3', '2020-01-08 21:10:57', '10', '15', NULL),
+  ('6', '3', 'null', 'null', 'null', 'Restaurant Cancellation'),
+  ('7', '2', '2020-01-08 21:30:45', '25km', '25mins', 'null'),
+  ('8', '2', '2020-01-10 00:15:02', '23.4 km', '15 minute', 'null'),
+  ('9', '2', 'null', 'null', 'null', 'Customer Cancellation'),
+  ('10', '1', '2020-01-11 18:50:20', '10km', '10minutes', 'null');
 
-CREATE TABLE members (
-  "customer_id" VARCHAR(1),
-  "join_date" DATE
+
+DROP TABLE IF EXISTS pizza_names;
+CREATE TABLE pizza_names (
+  "pizza_id" INTEGER,
+  "pizza_name" TEXT
 );
-
-INSERT INTO members
-  ("customer_id", "join_date")
+INSERT INTO pizza_names
+  ("pizza_id", "pizza_name")
 VALUES
-  ('A', '2021-01-07'),
-  ('B', '2021-01-09');
+  (1, 'Meatlovers'),
+  (2, 'Vegetarian');
+
+
+DROP TABLE IF EXISTS pizza_recipes;
+CREATE TABLE pizza_recipes (
+  "pizza_id" INTEGER,
+  "toppings" TEXT
+);
+INSERT INTO pizza_recipes
+  ("pizza_id", "toppings")
+VALUES
+  (1, '1, 2, 3, 4, 5, 6, 8, 10'),
+  (2, '4, 6, 7, 9, 11, 12');
+
+
+DROP TABLE IF EXISTS pizza_toppings;
+CREATE TABLE pizza_toppings (
+  "topping_id" INTEGER,
+  "topping_name" TEXT
+);
+INSERT INTO pizza_toppings
+  ("topping_id", "topping_name")
+VALUES
+  (1, 'Bacon'),
+  (2, 'BBQ Sauce'),
+  (3, 'Beef'),
+  (4, 'Cheese'),
+  (5, 'Chicken'),
+  (6, 'Mushrooms'),
+  (7, 'Onions'),
+  (8, 'Pepperoni'),
+  (9, 'Peppers'),
+  (10, 'Salami'),
+  (11, 'Tomatoes'),
+  (12, 'Tomato Sauce');
 ```
 
 # Cover Graphic
-![image](https://github.com/dandanZ-Z/Portfolio-Projects-/assets/130724132/a4193565-c29b-4106-9a12-118f55d87fc9)
+![image](https://github.com/dandanZ-Z/Portfolio-Projects-/assets/130724132/ccb38367-f2f5-4039-aad6-2770203125bc)
+
 
