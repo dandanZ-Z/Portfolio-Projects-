@@ -8,7 +8,7 @@ SELECT CUSTOMER_ID, PL_PLAN_ID, START_DATE
 FROM JOINED
 ORDER BY CUSTOMER_ID, PL_PLAN_ID
 ```
-Output:
+Output: (limited to 10/2650 rows)
 | customer_id | pl_plan_id | start_date |
 |-------------|------------|------------|
 | 1           | 0          | 2020-08-01 |
