@@ -1,9 +1,29 @@
 ## A: Customer Journey
-```sql
+Based off the 8 sample customers provided in the sample from the subscriptions table,
+write a brief description about each customer’s onboarding journey.
+Try to keep it as short as possible - you may also want to run some sort of join to make your explanations a bit easier!
 
+```sql
+SELECT CUSTOMER_ID, PL_PLAN_ID, START_DATE
+FROM JOINED
+ORDER BY CUSTOMER_ID, PL_PLAN_ID
 ```
 Output:
+| customer_id | pl_plan_id | start_date |
+|-------------|------------|------------|
+| 1           | 0          | 2020-08-01 |
+| 1           | 1          | 2020-08-08 |
+| 2           | 0          | 2020-09-20 |
+| 2           | 3          | 2020-09-27 |
+| 3           | 0          | 2020-01-13 |
+| 3           | 1          | 2020-01-20 |
+| 4           | 0          | 2020-01-17 |
+| 4           | 1          | 2020-01-24 |
+| 4           | 4          | 2020-04-21 |
+| 5           | 0          | 2020-08-03 |
 
+
+We see that customers all start with plan 0(trial), after a week they switch to a permanent plan.
 
 ## B: Data Analysis 
 **1. How many customers has Foodie-Fi ever had?**
