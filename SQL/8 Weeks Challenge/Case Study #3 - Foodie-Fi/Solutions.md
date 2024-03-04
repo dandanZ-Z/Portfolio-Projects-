@@ -211,11 +211,13 @@ HAVING
   MAX(pl_plan_id) != 0
 ````
 Output:
-"nu_in_plan"	"plan_name"	"current_plan_id"	"percent_of_total"
-538	"basic monthly"	1	53.8000000000000000000000
-235	"churn"	4	23.5000000000000000000000
-195	"pro annual"	3	19.5000000000000000000000
-479	"pro monthly"	2	47.9000000000000000000000
+| nu_in_plan | plan_name      | current_plan_id | percent_of_total |
+|------------|----------------|-----------------|------------------|
+| 538        | basic monthly  | 1               | 53.80            |
+| 235        | churn          | 4               | 23.50            |
+| 195        | pro annual     | 3               | 19.50            |
+| 479        | pro monthly    | 2               | 47.90            |
+
 ***
 
 **8. How many customers have upgraded to an annual plan in 2020?**
