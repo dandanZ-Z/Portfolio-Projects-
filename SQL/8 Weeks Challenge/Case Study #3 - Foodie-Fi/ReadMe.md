@@ -13,7 +13,7 @@ Danny created Foodie-Fi with a data driven mindset and wanted to ensure all futu
 ![image](https://github.com/dandanZ-Z/Portfolio-Projects-/assets/130724132/8c5a3319-4c5c-40d7-893c-5b30bbbddb5e)
 
 
-# Data Creation
+# Data Creation - 10/1000 entries shown 
 ```sql
 CREATE SCHEMA foodie_fi;
 SET search_path = foodie_fi;
@@ -57,3 +57,5 @@ VALUES
   ('5', '1', '2020-08-10'),
 
 
+# Cover Graphic
+![image](https://github.com/dandanZ-Z/Portfolio-Projects-/assets/130724132/9c41116e-eabc-4c75-990c-3eb4d53fb8d9)
